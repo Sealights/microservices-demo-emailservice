@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.10-slim
+FROM python:3.7-slim
 
 # get packages
 COPY requirements.txt .
@@ -24,6 +24,8 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get -qq update \
     && apt-get install -y --no-install-recommends \
     wget
+
+RUN python -V
 
 # Download the grpc health probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.7 && \
