@@ -14,12 +14,16 @@
 
 FROM python:3.7-slim
 
+ARG RM_DEV_SL_TOKEN=local
+ENV RM_DEV_SL_TOKEN ${RM_DEV_SL_TOKEN}
+
 # get packages
 COPY requirements.txt .
 RUN pip install -r requirements.txt
+RUN pip install --upgrade protobuf
 
-# Enable unbuffered logging
-ENV PYTHONUNBUFFERED=1
+# show python logs as they occur
+ENV PYTHONUNBUFFERED=0
 
 RUN apt-get -qq update \
     && apt-get install -y --no-install-recommends \
@@ -27,16 +31,25 @@ RUN apt-get -qq update \
 
 RUN python -V
 
-# Download the grpc health probe
+# download the grpc health probe
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.7 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
     chmod +x /bin/grpc_health_probe
 
 WORKDIR /email_server
 
-# Add the application
+# add files into working directory
 COPY . .
+
+RUN apt-get install -qq -y build-essential
+RUN apt-get install -qq  -y libffi-dev
+RUN apt-get install -qq  -y git
+RUN pip install sealights-python-agent
+RUN BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --branchname master --buildname "${BUILD_NAME}" --exclude "*venv*" --scm none
+RUN sl-python build --token $RM_DEV_SL_TOKEN
+RUN sl-python pytest --token $RM_DEV_SL_TOKEN --teststage "Unit Tests" -vv test*
+
 
 EXPOSE 8080
 
-ENTRYPOINT [ "opentelemetry-instrument", "python", "email_server.py" ]
+ENTRYPOINT opentelemetry-instrument --token $RM_DEV_SL_TOKEN python email_server.py
