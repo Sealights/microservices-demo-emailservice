@@ -4,6 +4,8 @@
 #
 #    pip-compile
 #
+attrs==21.4.0
+    # via pytest
 backoff==1.10.0
     # via opentelemetry-exporter-otlp-proto-grpc
 cachetools==4.2.0
@@ -12,6 +14,8 @@ certifi==2020.12.5
     # via requests
 charset-normalizer==2.0.10
     # via requests
+coverage[toml]==6.4
+    # via pytest-cov
 deprecated==1.2.13
     # via opentelemetry-api
 google-api-core==2.4.0
@@ -31,6 +35,8 @@ grpcio-health-checking==1.43.0
     # via -r requirements.in
 idna==2.10
     # via requests
+iniconfig==1.1.1
+    # via pytest
 jinja2==3.0.3
     # via -r requirements.in
 markupsafe==2.0.1
@@ -65,18 +71,38 @@ opentelemetry-semantic-conventions==0.28b1
     # via
     #   opentelemetry-instrumentation-grpc
     #   opentelemetry-sdk
+packaging==21.3
+    # via pytest
+pluggy==1.0.0
+    # via pytest
 protobuf==3.13.0
     # via
     #   google-api-core
     #   googleapis-common-protos
     #   grpcio-health-checking
     #   opentelemetry-proto
+py==1.11.0
+    # via pytest
 pyasn1==0.4.8
     # via
     #   pyasn1-modules
     #   rsa
 pyasn1-modules==0.2.8
     # via google-auth
+pyparsing==3.0.9
+    # via packaging
+pytest==7.1.2
+    # via
+    #   -r requirements.in
+    #   pytest-cov
+    #   pytest-grpc
+    #   pytest-mock
+pytest-cov==3.0.0
+    # via -r requirements.in
+pytest-grpc==0.8.0
+    # via -r requirements.in
+pytest-mock==3.7.0
+    # via -r requirements.in
 python-json-logger==2.0.2
     # via -r requirements.in
 requests==2.27.1
@@ -90,6 +116,10 @@ six==1.15.0
     #   google-auth
     #   grpcio
     #   protobuf
+tomli==2.0.1
+    # via
+    #   coverage
+    #   pytest
 typing-extensions==4.0.1
     # via opentelemetry-sdk
 urllib3==1.25.10
