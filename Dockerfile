@@ -20,7 +20,6 @@ ENV RM_DEV_SL_TOKEN ${RM_DEV_SL_TOKEN}
 # get packages
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-RUN pip install --upgrade protobuf
 
 # show python logs as they occur
 ENV PYTHONUNBUFFERED=0
