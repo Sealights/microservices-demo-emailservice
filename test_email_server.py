@@ -26,3 +26,5 @@ def test_SendOrderConfirmation(grpc_stub):
     response = grpc_stub.SendOrderConfirmation(send_order_confirmation_request)
 
     assert isinstance(response, Empty)
+
+    
