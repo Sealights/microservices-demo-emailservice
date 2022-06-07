@@ -2,7 +2,6 @@ import pytest as pytest
 
 from demo_pb2 import SendOrderConfirmationRequest, Empty
 
-
 @pytest.fixture(scope='module')
 def grpc_add_to_server():
     from demo_pb2_grpc import add_EmailServiceServicer_to_server
