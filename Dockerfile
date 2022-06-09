@@ -51,4 +51,4 @@ RUN sl-python pytest --token $RM_DEV_SL_TOKEN --teststage "Unit Tests" -vv test*
 
 EXPOSE 8080
 
-ENTRYPOINT opentelemetry-instrument --token $RM_DEV_SL_TOKEN python email_server.py
+ENTRYPOINT opentelemetry-instrument python email_server.py
