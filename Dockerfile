@@ -15,7 +15,25 @@
 FROM python:3.7-slim
 
 ARG RM_DEV_SL_TOKEN=local
+ARG IS_PR=""
+ARG TARGET_BRANCH=""
+ARG LATEST_COMMIT=""
+ARG PR_NUMBER=""
+ARG TARGET_REPO_URL=""
+
 ENV RM_DEV_SL_TOKEN ${RM_DEV_SL_TOKEN}
+ENV IS_PR ${IS_PR}
+ENV TARGET_BRANCH ${TARGET_BRANCH}
+ENV LATEST_COMMIT ${LATEST_COMMIT}
+ENV PR_NUMBER ${PR_NUMBER}
+ENV TARGET_REPO_URL ${TARGET_REPO_URL}
+
+RUN echo "========================================================="
+RUN echo "targetBranch: ${TARGET_BRANCH}"
+RUN echo "latestCommit: ${LATEST_COMMIT}"
+RUN echo "pullRequestNumber ${PR_NUMBER}"
+RUN echo "repositoryUrl ${TARGET_REPO_URL}"
+RUN echo "========================================================="
 
 # get packages
 COPY requirements.txt .
@@ -44,7 +62,17 @@ RUN apt-get install -qq -y build-essential
 RUN apt-get install -qq  -y libffi-dev
 RUN apt-get install -qq  -y git
 RUN pip install sealights-python-agent
-RUN BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --branchname master --buildname "${BUILD_NAME}" --exclude "*venv*" --scm none
+
+RUN if [[ $IS_PR -eq 0 ]]; then \
+    echo "Check-in to repo"; \
+    BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --branchname master --buildname "${BUILD_NAME}" --exclude "*venv*" --scm none ; \    
+else \ 
+    echo "Pull request"; \
+    BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --targetBranch "${TARGET_BRANCH}" \
+    --exclude "*venv*" --scm none --latestCommit "${LATEST_COMMIT}" --pullRequestNumber "${PR_NUMBER}" --repositoryUrl "${TARGET_REPO_URL}" ; \
+fi
+
+
 RUN sl-python build --token $RM_DEV_SL_TOKEN
 RUN sl-python pytest --token $RM_DEV_SL_TOKEN --teststage "Unit Tests" -vv test*
 
