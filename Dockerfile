@@ -68,7 +68,7 @@ RUN if [[ $IS_PR -eq 0 ]]; then \
     BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --branchname master --buildname "${BUILD_NAME}" --exclude "*venv*" --scm none ; \    
 else \ 
     echo "Pull request"; \
-    BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --targetBranch "${TARGET_BRANCH}" \
+    BUILD_NAME=$(date +%F_%T) && sl-python prConfig --token $RM_DEV_SL_TOKEN --appname "emailservice" --targetBranch "${TARGET_BRANCH}" \
     --exclude "*venv*" --scm none --latestCommit "${LATEST_COMMIT}" --pullRequestNumber "${PR_NUMBER}" --repositoryUrl "${TARGET_REPO_URL}" ; \
 fi
 
