@@ -63,13 +63,13 @@ RUN apt-get install -qq  -y libffi-dev
 RUN apt-get install -qq  -y git
 RUN pip install sealights-python-agent
 
-RUN if [[ $IS_PR -eq 0 ]]; then \
+RUN if [ $IS_PR = 0 ]; then \
     echo "Check-in to repo"; \
     BUILD_NAME=$(date +%F_%T) && sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --branchname master --buildname "${BUILD_NAME}" --exclude "*venv*" --scm none ; \    
 else \ 
     echo "Pull request"; \
     BUILD_NAME=$(date +%F_%T) && sl-python prConfig --token $RM_DEV_SL_TOKEN --appname "emailservice" --targetBranch "${TARGET_BRANCH}" \
-    --exclude "*venv*" --scm none --latestCommit "${LATEST_COMMIT}" --pullRequestNumber "${PR_NUMBER}" --repositoryUrl "${TARGET_REPO_URL}" ; \
+        --exclude "*venv*" --scm none --latestCommit "${LATEST_COMMIT}" --pullRequestNumber "${PR_NUMBER}" --repositoryUrl "${TARGET_REPO_URL}" ; \
 fi
 
 
