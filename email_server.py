@@ -34,8 +34,11 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (BatchSpanProcessor)
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
+import init_tracing
 from logger import getJSONLogger
 logger = getJSONLogger('emailservice-server')
+
+init_tracing.init_tracer_provider()
 
 tracer_provider = TracerProvider()
 trace.set_tracer_provider(tracer_provider)
