@@ -56,6 +56,7 @@ opentelemetry-api==1.9.1
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-grpc
     #   opentelemetry-instrumentation-jinja2
+    #   opentelemetry-instrumentation-urllib3
     #   opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-grpc==1.9.1
     # via -r requirements.in
@@ -66,9 +67,12 @@ opentelemetry-instrumentation==0.28b1
     #   -r requirements.in
     #   opentelemetry-instrumentation-grpc
     #   opentelemetry-instrumentation-jinja2
+    #   opentelemetry-instrumentation-urllib3
 opentelemetry-instrumentation-grpc==0.28b1
     # via -r requirements.in
 opentelemetry-instrumentation-jinja2==0.28b1
+    # via -r requirements.in
+opentelemetry-instrumentation-urllib3==0.28b1
     # via -r requirements.in
 opentelemetry-proto==1.9.1
     # via
@@ -83,7 +87,10 @@ opentelemetry-sdk==1.9.1
 opentelemetry-semantic-conventions==0.28b1
     # via
     #   opentelemetry-instrumentation-grpc
+    #   opentelemetry-instrumentation-urllib3
     #   opentelemetry-sdk
+opentelemetry-util-http==0.28b1
+    # via opentelemetry-instrumentation-urllib3
 packaging==21.3
     # via pytest
 pluggy==1.0.0
@@ -102,6 +109,8 @@ pyasn1==0.4.8
     #   rsa
 pyasn1-modules==0.2.8
     # via google-auth
+pyjwt==2.4.0
+    # via -r requirements.in
 pyparsing==3.0.9
     # via packaging
 pytest==7.1.2
@@ -136,14 +145,17 @@ tomli==2.0.1
     #   pytest
 typing-extensions==4.0.1
     # via opentelemetry-sdk
-urllib3==1.25.10
-    # via requests
+urllib3==1.26.8
+    # via
+    #   -r requirements.in
+    #   requests
 wrapt==1.13.3
     # via
     #   deprecated
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-grpc
     #   opentelemetry-instrumentation-jinja2
+    #   opentelemetry-instrumentation-urllib3
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
