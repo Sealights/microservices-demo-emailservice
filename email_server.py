@@ -34,6 +34,9 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (BatchSpanProcessor)
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
+import boto3
+import json
+
 import init_tracing
 from logger import getJSONLogger
 logger = getJSONLogger('emailservice-server')
@@ -47,9 +50,20 @@ tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter()))
 # Loads confirmation email template from file
 env = Environment(
     loader=FileSystemLoader('templates'),
-    autoescape=select_autoescape(['html', 'xml'])
+    autoescape=select_autoescape(['html', 'xml'])    
 )
+
+region_name = os.environ.get('AWS_REGION', "us-east-2")
+aws_access_key_id = os.environ.get('AWS_US_ACCESS_KEY_ID', "")
+aws_secret_access_key = os.environ.get('AWS_US_SECRET_ACCESS_KEY', "")
+endpoint_url = os.environ.get('AWS_SQS_QUEUE_URL', "") 
 template = env.get_template('confirmation.html')
+
+sqs = boto3.client('sqs',
+      region_name=region_name,
+      aws_access_key_id=aws_access_key_id,
+      aws_secret_access_key=aws_secret_access_key      
+) if aws_access_key_id != "" and aws_secret_access_key != "" and endpoint_url != "" else None
 
 class BaseEmailService(demo_pb2_grpc.EmailServiceServicer):
   def Check(self, request, context):
@@ -110,6 +124,34 @@ class EmailService(BaseEmailService):
 class DummyEmailService(BaseEmailService):
   def SendOrderConfirmation(self, request, context):
     logger.info('A request to send order confirmation email to {} has been received.'.format(request.email))
+    if sqs is None:
+      logger.info('SQS client is not created')
+    else:
+      # Send message to SQS queue
+      try:
+        response = sqs.send_message(
+              QueueUrl=endpoint_url,
+              DelaySeconds=10,
+              MessageAttributes={
+                  'FromAddress': {
+                      'DataType': 'String',
+                      'StringValue': 'boutique@gmail.com'
+                  },
+                  'ToAddress': {
+                      'DataType': 'String',
+                      'StringValue': request.email
+                  },
+                  'Title': {
+                      'DataType': 'String',
+                      'StringValue': 'Your Confirmation Email'
+                  }
+              },
+              MessageBody=json.dumps(request.order, default=str)
+          )
+        logger.info('SQS send message response {} .'.format(response['MessageId']))
+      except Exception as e: 
+        logger.error('Error during sending message to sqs {} .'.format(e))
+    
     return demo_pb2.Empty()
 
 class HealthCheck():
