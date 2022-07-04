@@ -59,12 +59,6 @@ aws_secret_access_key = os.environ.get('AWS_US_SECRET_ACCESS_KEY', "")
 endpoint_url = os.environ.get('AWS_SQS_QUEUE_URL', "") 
 template = env.get_template('confirmation.html')
 
-sqs = boto3.client('sqs',
-      region_name=region_name,
-      aws_access_key_id=aws_access_key_id,
-      aws_secret_access_key=aws_secret_access_key      
-) if aws_access_key_id != "" and aws_secret_access_key != "" and endpoint_url != "" else None
-
 class BaseEmailService(demo_pb2_grpc.EmailServiceServicer):
   def Check(self, request, context):
     return health_pb2.HealthCheckResponse(
@@ -122,37 +116,46 @@ class EmailService(BaseEmailService):
     return demo_pb2.Empty()
 
 class DummyEmailService(BaseEmailService):
+  sqs = boto3.client('sqs',
+      region_name=region_name,
+      aws_access_key_id=aws_access_key_id,
+      aws_secret_access_key=aws_secret_access_key      
+) if aws_access_key_id != "" and aws_secret_access_key != "" and endpoint_url != "" else None
+
   def SendOrderConfirmation(self, request, context):
     logger.info('A request to send order confirmation email to {} has been received.'.format(request.email))
-    if sqs is None:
+    if self.sqs is None:
       logger.info('SQS client is not created')
     else:
       # Send message to SQS queue
       try:
-        response = sqs.send_message(
-              QueueUrl=endpoint_url,
-              DelaySeconds=10,
-              MessageAttributes={
-                  'FromAddress': {
-                      'DataType': 'String',
-                      'StringValue': 'boutique@gmail.com'
-                  },
-                  'ToAddress': {
-                      'DataType': 'String',
-                      'StringValue': request.email
-                  },
-                  'Title': {
-                      'DataType': 'String',
-                      'StringValue': 'Your Confirmation Email'
-                  }
-              },
-              MessageBody=json.dumps(request.order, default=str)
-          )
+        response = self.CreateSqsMessage(request)
         logger.info('SQS send message response {} .'.format(response['MessageId']))
       except Exception as e: 
         logger.error('Error during sending message to sqs {} .'.format(e))
     
     return demo_pb2.Empty()
+
+  def CreateSqsMessage(self, request):
+    return self.sqs.send_message(
+            QueueUrl=endpoint_url,
+            DelaySeconds=10,
+            MessageAttributes={
+                'FromAddress': {
+                    'DataType': 'String',
+                    'StringValue': 'boutique@gmail.com'
+                },
+                'ToAddress': {
+                    'DataType': 'String',
+                    'StringValue': request.email
+                },
+                'Title': {
+                    'DataType': 'String',
+                    'StringValue': 'Your Confirmation Email'
+                }
+            },
+            MessageBody=json.dumps(request.order, default=str)
+        )
 
 class HealthCheck():
   def Check(self, request, context):
