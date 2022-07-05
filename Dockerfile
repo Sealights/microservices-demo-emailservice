@@ -14,8 +14,9 @@
 
 FROM python:3.7-slim
 
-ARG RM_DEV_SL_TOKEN=local
+ARG RM_DEV_SL_TOKEN=""
 ARG BUILD_NAME=""
+
 ENV RM_DEV_SL_TOKEN ${RM_DEV_SL_TOKEN}
 ENV BUILD_NAME ${BUILD_NAME}
 
@@ -49,7 +50,6 @@ RUN pip install sealights-python-agent
 RUN sl-python config --token $RM_DEV_SL_TOKEN --appname "emailservice" --branchname master --buildname "${BUILD_NAME}" --exclude "*venv*" --scm git
 RUN sl-python build --token $RM_DEV_SL_TOKEN
 RUN sl-python pytest --token $RM_DEV_SL_TOKEN --teststage "Unit Tests" -vv test*
-
 
 EXPOSE 8080
 
