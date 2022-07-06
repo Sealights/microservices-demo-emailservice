@@ -8,6 +8,8 @@ atomicwrites==1.4.0
     # via pytest
 attrs==21.4.0
     # via pytest
+aws-xray-sdk==2.10.0
+    # via -r requirements.in
 backoff==1.10.0
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -16,6 +18,7 @@ boto3==1.24.20
     # via -r requirements.in
 botocore==1.27.22
     # via
+    #   aws-xray-sdk
     #   boto3
     #   s3transfer
 cachetools==4.2.0
@@ -167,6 +170,7 @@ urllib3==1.26.8
     #   requests
 wrapt==1.13.3
     # via
+    #   aws-xray-sdk
     #   deprecated
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-grpc
