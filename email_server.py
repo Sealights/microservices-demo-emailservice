@@ -151,7 +151,7 @@ class DummyEmailService(BaseEmailService):
                 },
                 'ToAddress': {
                     'DataType': 'String',
-                    'StringValue': request.email
+                    'StringValue': email
                 },
                 'Title': {
                     'DataType': 'String',
