@@ -137,6 +137,10 @@ class DummyEmailService(BaseEmailService):
     return demo_pb2.Empty()
 
   def CreateSqsMessage(self, request):
+    email = request.email
+    if email == "":
+      email = "test@email"
+
     return self.sqs.send_message(
             QueueUrl=endpoint_url,
             DelaySeconds=10,
