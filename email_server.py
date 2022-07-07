@@ -34,7 +34,6 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (BatchSpanProcessor)
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.extension.aws.trace import AwsXRayIdGenerator
-from opentelemetry.sdk.trace import TracerProvider
 
 import boto3
 import json
