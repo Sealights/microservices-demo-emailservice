@@ -68,7 +68,6 @@ opentelemetry-api==1.9.1
     #   opentelemetry-instrumentation-grpc
     #   opentelemetry-instrumentation-jinja2
     #   opentelemetry-instrumentation-urllib3
-    #   opentelemetry-propagator-aws-xray
     #   opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-grpc==1.9.1
     # via -r requirements.in
@@ -88,8 +87,6 @@ opentelemetry-instrumentation-jinja2==0.28b1
     # via -r requirements.in
 opentelemetry-instrumentation-urllib3==0.28b1
     # via -r requirements.in
-opentelemetry-propagator-aws-xray==1.0.1
-    # via -r requirements.in
 opentelemetry-proto==1.9.1
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -100,9 +97,6 @@ opentelemetry-sdk==1.9.1
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-instrumentation-grpc
-    #   opentelemetry-sdk-extension-aws
-opentelemetry-sdk-extension-aws==2.0.1
-    # via -r requirements.in
 opentelemetry-semantic-conventions==0.28b1
     # via
     #   opentelemetry-instrumentation-grpc
