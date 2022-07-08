@@ -8,11 +8,11 @@ def grpc_add_to_server():
     return add_EmailServiceServicer_to_server
 
 
-@pytest.fixture(scope='module')
-def grpc_servicer(module_mocker):
-    module_mocker.patch("init_tracing.init_tracer_provider")
-    from email_server import DummyEmailService
-    return DummyEmailService()
+# @pytest.fixture(scope='module')
+# def grpc_servicer(module_mocker):
+#     module_mocker.patch("init_tracing.init_tracer_provider")
+#     from email_server import DummyEmailService
+#     return DummyEmailService()
 
 
 @pytest.fixture(scope='module')
