@@ -27,7 +27,7 @@ def grpc_stub(grpc_channel):
 
 #     assert isinstance(response, Empty)
 
-def dump_test():
+def test_dump():
     assert 1 == 1
 
     
