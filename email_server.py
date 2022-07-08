@@ -33,13 +33,12 @@ from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (BatchSpanProcessor)
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.extension.aws.trace import AwsXRayIdGenerator
-from opentelemetry.propagate import set_global_textmap
-from opentelemetry.propagators.aws import AwsXRayPropagator
-
-set_global_textmap(AwsXRayPropagator())
 
 import boto3
+from opentelemetry.instrumentation.boto3sqs import Boto3SQSInstrumentor
+
+Boto3SQSInstrumentor().instrument()
+
 import json
 
 import init_tracing
@@ -48,7 +47,7 @@ logger = getJSONLogger('emailservice-server')
 
 init_tracing.init_tracer_provider()
 
-tracer_provider = TracerProvider(id_generator=AwsXRayIdGenerator())
+tracer_provider = TracerProvider()
 trace.set_tracer_provider(tracer_provider)
 tracer_provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter()))
 
