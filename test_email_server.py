@@ -12,6 +12,8 @@ def grpc_add_to_server():
 def grpc_servicer(module_mocker):
     module_mocker.patch("init_tracing.init_tracer_provider")
     from email_server import DummyEmailService
+    from opentelemetry.instrumentation.boto3sqs import Boto3SQSInstrumentor
+    Boto3SQSInstrumentor().instrument()
     return DummyEmailService()
 
 
