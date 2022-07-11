@@ -58,7 +58,7 @@ jmespath==1.0.1
     #   botocore
 markupsafe==2.0.1
     # via jinja2
-opentelemetry-api==1.9.1
+opentelemetry-api==1.12.0rc2
     # via
     #   -r requirements.in
     #   opentelemetry-exporter-otlp-proto-grpc
@@ -69,11 +69,11 @@ opentelemetry-api==1.9.1
     #   opentelemetry-instrumentation-jinja2
     #   opentelemetry-instrumentation-urllib3
     #   opentelemetry-sdk
-opentelemetry-exporter-otlp-proto-grpc==1.9.1
+opentelemetry-exporter-otlp-proto-grpc==1.11.1
     # via -r requirements.in
-opentelemetry-exporter-otlp-proto-http==1.9.1
+opentelemetry-exporter-otlp-proto-http==1.11.1
     # via -r requirements.in
-opentelemetry-instrumentation==0.28b1
+opentelemetry-instrumentation==0.32b0
     # via
     #   -r requirements.in
     #   opentelemetry-instrumentation-grpc
@@ -81,28 +81,28 @@ opentelemetry-instrumentation==0.28b1
     #   opentelemetry-instrumentation-urllib3
 opentelemetry-instrumentation-boto3sqs==0.32b0
     # via -r requirements.in
-opentelemetry-instrumentation-grpc==0.28b1
+opentelemetry-instrumentation-grpc==0.32b0
     # via -r requirements.in
-opentelemetry-instrumentation-jinja2==0.28b1
+opentelemetry-instrumentation-jinja2==0.32b0
     # via -r requirements.in
-opentelemetry-instrumentation-urllib3==0.28b1
+opentelemetry-instrumentation-urllib3==0.32b0
     # via -r requirements.in
-opentelemetry-proto==1.9.1
+opentelemetry-proto==1.11.1
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-opentelemetry-sdk==1.9.1
+opentelemetry-sdk==1.12.0rc2
     # via
     #   -r requirements.in
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-instrumentation-grpc
-opentelemetry-semantic-conventions==0.28b1
+opentelemetry-semantic-conventions==0.32b0
     # via
     #   opentelemetry-instrumentation-grpc
     #   opentelemetry-instrumentation-urllib3
     #   opentelemetry-sdk
-opentelemetry-util-http==0.28b1
+opentelemetry-util-http==0.32b0
     # via opentelemetry-instrumentation-urllib3
 packaging==21.3
     # via pytest
