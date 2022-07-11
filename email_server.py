@@ -35,6 +35,10 @@ from opentelemetry.sdk.trace.export import (BatchSpanProcessor)
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
 import boto3
+from opentelemetry.instrumentation.boto3sqs import Boto3SQSInstrumentor
+
+Boto3SQSInstrumentor().instrument()
+
 import json
 
 import init_tracing
